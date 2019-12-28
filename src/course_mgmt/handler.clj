@@ -4,8 +4,8 @@
             [ring.util.response]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [course-mgmt.db :as db]
-            [course-mgmt.registration :refer [registration]]
-            [course-mgmt.userlisting :refer [userlisting]]
+            [course-mgmt.attendeeregistration :refer [attendeeregistration]]
+            [course-mgmt.attendeelisting :refer [attendeelisting]]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
         [hiccup.core]
@@ -27,17 +27,17 @@
 
 (defroutes app-routes
   (GET "/" [] #'welcome)
-  (GET "/register" [] #'registration)
-  (POST "/register" [firstname lastname comment]
+  (GET "/register" [] #'attendeeregistration)
+  (POST "/register" [course firstname lastname birthdate contact contactemail contactphone comment]
         (do
-          (db/insert-user {:firstname firstname :lastname lastname :comment comment :timestamp (java.util.Date.)})
+          (db/insert-attendee {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment :timestamp (java.util.Date.)})
           ;;  :time (java.util.Date.) - UTC Zeit
-          (#'userlisting (db/list-users))))
+          (#'attendeelisting (db/list-attendees))))
   (DELETE "/list" [id]
         (do
-          (db/delete-id id)
-          (#'userlisting (db/list-users))))
-  (GET "/list" [] (#'userlisting (db/list-users)))
+          (db/delete-attendee id)
+          (#'attendeelisting (db/list-attendees))))
+  (GET "/list" [] (#'attendeelisting (db/list-attendees)))
   (route/not-found "Not Found"))
 
 (def app

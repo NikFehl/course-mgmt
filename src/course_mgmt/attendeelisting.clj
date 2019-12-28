@@ -1,4 +1,4 @@
-(ns course-mgmt.userlisting
+(ns course-mgmt.attendeelisting
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.util.response]
@@ -13,7 +13,7 @@
         [java-time :only [local-date-time as]]))
 
 
-(defn userlisting
+(defn attendeelisting
   [users]
   (html5  {:lang "en"}
   [:head
@@ -21,21 +21,30 @@
   [:body
     [:div.container [:h1 "Übersicht Anmeldungen:" ]]
     [:div.container {:data-offset-top "250"}
+    ;; liste sortieren nach Anmeldedatum, Nachname, Listenplatz,
       [:table
         [:thead
           [:tr
             [:td "Entfernen?"]
+            [:td [:b "Anmeldedatum"]]
             [:td [:b "Vorname"]]
             [:td [:b "Nachname"]]
-            [:td [:b "Anmeldedatum"]]
+            [:td [:b "Geburtsdatum"]]
+            [:td [:b "Ansprechperson"]]
+            [:td [:b "Email"]]
+            [:td [:b "Telefon"]]
             [:td [:b "Kommentar"]]]]
           [:tbody
-          (for [{:keys [_id, firstname, lastname, timestamp, comment]} users]
+          (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} users]
             [:tr
-              [:td (form-to [:delete "./list"] (hidden-field :id _id) [:button.button-clear {:type "reset"} "entfernen"] (anti-forgery-field))]
-              [:td (escape-html firstname)]
-              [:td (escape-html lastname)]
+              [:td (form-to [:delete "./list"] (hidden-field :id _id) [:button.button-clear {:type "submit"} "entfernen"] (anti-forgery-field))]
               [:td (if timestamp
                      (local-date-time timestamp))]
+              [:td (escape-html firstname)]
+              [:td (escape-html lastname)]
+              [:td (escape-html birthdate)]
+              [:td (escape-html contact)]
+              [:td (escape-html contactemail)]
+              [:td (escape-html contactphone)]
               [:td (escape-html comment)]]
           [:div  #"\n" "<br>"])]]]]))

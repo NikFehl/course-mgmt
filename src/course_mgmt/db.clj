@@ -19,11 +19,11 @@
 ;;  (map transform-id-to-string (mc/find-maps db collection))))
     (mc/find-maps db collection))
 
-(defn insert-user [data]
+(defn insert-attendee [data]
   (mc/insert db "users" data))
 
-(defn list-users []
+(defn list-attendees []
     (mc/find-maps db "users"))
-    
-(defn delete-id [id]
+
+(defn delete-attendee [id]
   (mc/remove-by-id db "users" (ObjectId. id))))
