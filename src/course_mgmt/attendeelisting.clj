@@ -1,8 +1,5 @@
 (ns course-mgmt.attendeelisting
-  (:require [compojure.core :refer :all]
-            [compojure.route :as route]
-            [ring.util.response]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+  (:require [ring.util.response]
             [course-mgmt.db :as db]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use

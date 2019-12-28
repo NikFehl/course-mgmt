@@ -6,6 +6,7 @@
             [course-mgmt.db :as db]
             [course-mgmt.attendeeregistration :refer [attendeeregistration]]
             [course-mgmt.attendeelisting :refer [attendeelisting]]
+            [course-mgmt.coursemgmt :refer :all]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
         [hiccup.core]
@@ -38,6 +39,9 @@
           (db/delete-attendee id)
           (#'attendeelisting (db/list-attendees))))
   (GET "/list" [] (#'attendeelisting (db/list-attendees)))
+  (GET "/courses/manage" [] #'courselist)
+;;  (POST "/courses/manage" [name state supervisor] #'coursemgmt)
+;;  (POST "/courses/:id" [] #'courseedit)
   (route/not-found "Not Found"))
 
 (def app
