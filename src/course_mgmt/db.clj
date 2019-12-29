@@ -35,4 +35,7 @@
   (if (= (:id data) "nil")
       (mc/insert db "courses" {:name (:name data) :state (:state data) :supervisor (:supervisor data)})
       (mc/update-by-id db "courses" (ObjectId. (:id data)) {:name (:name data) :state (:state data) :supervisor (:supervisor data)})))
+
+(defn delete-course [id]
+  (mc/remove-by-id db "courses" (ObjectId. id)))
 )

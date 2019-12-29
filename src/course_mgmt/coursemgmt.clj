@@ -13,40 +13,38 @@
   [id]
   (if (= id "nil")
       ((def course {:_id "nil" :name "Name" :state "deaktiviert" :supervisor "Verantwortlicher"})
-       (def btntype "anlegen"))
+       (def btntype "anlegen")
+       (def del-form [:td ]))
       ((def course (db/get-course id))
-       (def btntype "ändern")))
+       (def btntype "ändern")
+       (def del-form (form-to [:delete "./manage"] [:td (hidden-field :id (:_id course)) [:button.button-clear {:type "submit"} "Kurs entfernen"] (anti-forgery-field)]))))
   (html5  {:lang "en"}
     [:head
       (include-css "../css/milligram.css")]
     [:body
       [:div.container [:h4 "Kurs:"]]
       [:div.container
-        (form-to [:post "../courses/manage"]
         [:table
           [:thead
             [:tr
               [:td [:b "Name"]]
               [:td [:b "Status"]]
               [:td [:b "Verantwortlicher"]]
-              [:td
-              ]]]
+              [:td ]
+              [:td ]]]
           [:tbody
             [:tr
+              (form-to [:post "./manage"]
               [:td (text-field :name (:name course))]
               [:td (let [options ["aktiv" "deaktiviert"]
                     selected (:state course)]
                     (drop-down :state options selected))]
               [:td (text-field :supervisor (:supervisor course))]
-              [:td (hidden-field :id (:_id course)) [:button.button-clear {:type "submit"} btntype] (anti-forgery-field)]]
-           ]])
-              ]]))
+              [:td (hidden-field :id (:_id course)) [:button {:type "submit"} btntype] (anti-forgery-field)])
+              del-form ]
+           ]]]]))
 
 (defn coursedelete
-  [params]
-  )
-
-(defn courseinsert
   [params]
   )
 
@@ -62,17 +60,18 @@
           [:table
             [:thead
               [:tr
-                [:td "ändern?"]
+                [:td ]
+                [:td [:b "Kursname"]]
                 [:td [:b "Status"]]
-                [:td [:b "Kurs"]]
                 [:td [:b "Verantwortlicher"]]
                 [:td [:b "Anzahl der Teilnehmer"]]]]
             [:tbody
               (for [{:keys [_id, name, state, supervisor, attendeecount]} courses]
               [:tr
-                [:td (form-to [:post "./edit"] (hidden-field :id _id) [:button.button-clear {:type "submit"} "ändern"] (anti-forgery-field))]
-                [:td (escape-html state)]
+                (form-to [:post "./edit"]
+                  [:td (hidden-field :id _id) [:button.button-outline {:type "submit"} "ändern"] (anti-forgery-field) ])
                 [:td (escape-html name)]
+                [:td (escape-html state)]
                 [:td (escape-html supervisor)]
                 [:td (escape-html attendeecount)]]
                 [:div  #"\n" "<br>"])]]

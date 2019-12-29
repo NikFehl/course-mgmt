@@ -44,7 +44,10 @@
         (do
           (db/course-manage {:id id :name name :state state :supervisor supervisor})
           #'courselist))
-  (GET "/courses/insert" [] #'courseedit)
+  (DELETE "/courses/manage" [id]
+        (do
+          (db/delete-course id)
+          #'courselist))
   (POST "/courses/edit" [id] (courseedit id))
   (route/not-found "Not Found"))
 
