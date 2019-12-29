@@ -29,19 +29,19 @@
                         (drop-down :course options))]]
                 [:div.row
                     [:div.column.column-25 [:label "Vorname:"]]
-                    [:div.column.column-25 (text-field :firstname)]]
+                    [:div.column.column-25 (text-field {:required "true"} :firstname)]]
                 [:div.row
                     [:div.column.column-25 [:label "Nachname:"]]
-                    [:div.column.column-25 (text-field :lastname)]]
+                    [:div.column.column-25 (text-field {:required "true"} :lastname)]]
                 [:div.row
                     [:div.column.column-25 [:label "Geburtsdatum:"]]
-                    [:div.column.column-25 (text-field :birthdate "01-01-2000")]]
+                    [:div.column.column-25 [:input {:id "birthdate" :name "birthdate" :type "date" :required "true"}]]]
                 [:div.row
                     [:div.column.column-25 [:label "Ansprechperson:"]]
-                    [:div.column.column-25 (text-field :contact)]]
+                    [:div.column.column-25 (text-field {:required "true"} :contact)]]
                 [:div.row
                     [:div.column.column-25 [:label "Email:"]]
-                    [:div.column.column-25 (text-field :contactemail)]]
+                    [:div.column.column-25 (text-field {:required "true"} :contactemail)]]
                 [:div.row
                     [:div.column.column-25 [:label "Telefon:"]]
                     [:div.column.column-25 (text-field :contactphone)]]
@@ -49,7 +49,7 @@
                     [:div.column.column-25 [:label "Kommentar:"]]
                     [:div.column.column-25 (text-area {:rows 5} :comment)]]
                 [:div.row
-                    [:div.column [:input {:type "checkbox"}] "Hiermit bestätige ich, dass meine Daten für die Anmeldung gespeichert werden. "]]
+                    [:div.column [:input {:type "checkbox" :required "true"}] "Hiermit bestätige ich, dass meine Daten für die Anmeldung gespeichert werden. "]]
                 [:div.row
                     [:div.column [:button {:type "submit"} "unverbindlich Anmelden"]]]
                     (anti-forgery-field)])]]
