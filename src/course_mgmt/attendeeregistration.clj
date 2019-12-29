@@ -1,5 +1,6 @@
 (ns course-mgmt.attendeeregistration
   (:require
+        [course-mgmt.db :as db]
         [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
         [hiccup.core]
@@ -20,9 +21,8 @@
                 [:div.row
                     [:div.column.column-25 [:label "Kurs:"]]
                     [:div.column.column-25
-                        (let [options ["Babyschwimmen" "Anfängerschwimmen" "Seepferdchen"]
-                              selected "Seepferdchen"]
-                        (drop-down :course options selected))]]
+                        (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
+                        (drop-down :course options))]]
                 [:div.row
                     [:div.column.column-25 [:label "Vorname:"]]
                     [:div.column.column-25 (text-field :firstname)]]

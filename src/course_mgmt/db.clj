@@ -19,6 +19,7 @@
 ;;  (map transform-id-to-string (mc/find-maps db collection))))
     (mc/find-maps db collection))
 
+;; for attendee-management:
 (defn insert-attendee [data]
   (mc/insert db "users" data))
 
@@ -28,6 +29,7 @@
 (defn delete-attendee [id]
   (mc/remove-by-id db "users" (ObjectId. id)))
 
+;; for course-management:
 (defn get-course [id]
   (mc/find-one-as-map db "courses" { :_id (ObjectId. id)}))
 
@@ -38,4 +40,7 @@
 
 (defn delete-course [id]
   (mc/remove-by-id db "courses" (ObjectId. id)))
+
+(defn count-courseattendees [course]
+  (mc/count db "users" {:course course}))
 )

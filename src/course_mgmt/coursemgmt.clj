@@ -35,6 +35,7 @@
           [:tbody
             [:tr
               (form-to [:post "./manage"]
+              ;; Problem: Namensänderung des Kurses bei aktivem Kurs...
               [:td (text-field :name (:name course))]
               [:td (let [options ["aktiv" "deaktiviert"]
                     selected (:state course)]
@@ -64,16 +65,16 @@
                 [:td [:b "Kursname"]]
                 [:td [:b "Status"]]
                 [:td [:b "Verantwortlicher"]]
-                [:td [:b "Anzahl der Teilnehmer"]]]]
+                [:td [:b "Anzahl Teilnehmer"]]]]
             [:tbody
-              (for [{:keys [_id, name, state, supervisor, attendeecount]} courses]
+              (for [{:keys [_id, name, state, supervisor]} courses]
               [:tr
                 (form-to [:post "./edit"]
                   [:td (hidden-field :id _id) [:button.button-outline {:type "submit"} "ändern"] (anti-forgery-field) ])
                 [:td (escape-html name)]
                 [:td (escape-html state)]
                 [:td (escape-html supervisor)]
-                [:td (escape-html attendeecount)]]
+                [:td (db/count-courseattendees name)]]
                 [:div  #"\n" "<br>"])]]
           [:div.row
             [:div.column
