@@ -6,21 +6,25 @@
         [hiccup.core]
         [hiccup.page]
         [hiccup.form]
-        [hiccup.util]))
+        [hiccup.util]
+        [hiccup.element]
+        [course-mgmt.pagedefaults]))
 
 (defn attendeeregistration
   [request]
     (html5  {:lang "en"}
-      [:head
-        (include-css "css/milligram.css")]
+      htmlheader
       [:body
-        [:div.container [:h2 "Anmeldung" ]]
+        [:div.container
+          navbar
+          [:div.row [:h4 "Anmeldung" ]]]
         [:div.container {:data-offset-top "250"}
             (form-to [:post "./register"]
               [:fieldset
                 [:div.row
                     [:div.column.column-25 [:label "Kurs:"]]
                     [:div.column.column-25
+                    ;; Status wird nicht berücksichtigt
                         (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
                         (drop-down :course options))]]
                 [:div.row
@@ -49,4 +53,5 @@
                 [:div.row
                     [:div.column [:button {:type "submit"} "unverbindlich Anmelden"]]]
                     (anti-forgery-field)])]]
+      htmlfooter
       [:headers {}]))

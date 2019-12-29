@@ -7,16 +7,19 @@
         [hiccup.page]
         [hiccup.form]
         [hiccup.util]
+        [hiccup.element]
+        [course-mgmt.pagedefaults]
         [java-time :only [local-date-time as]]))
 
 
 (defn attendeelisting
   [users]
   (html5  {:lang "en"}
-  [:head
-      (include-css "css/milligram.css")]
+  htmlheader
   [:body
-    [:div.container [:h1 "Übersicht Anmeldungen:" ]]
+    [:div.container
+      navbar
+      [:div.row [:h4 "Übersicht Anmeldungen:" ]]]
     [:div.container {:data-offset-top "250"}
     ;; liste sortieren nach Anmeldedatum, Nachname, Listenplatz,
       [:table
@@ -34,7 +37,7 @@
           [:tbody
           (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} users]
             [:tr
-              [:td (form-to [:delete "./list"] (hidden-field :id _id) [:button.button-clear {:type "submit"} "entfernen"] (anti-forgery-field))]
+              (form-to [:delete "./list"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "entfernen"] (anti-forgery-field) ])
               [:td (if timestamp
                      (local-date-time timestamp))]
               [:td (escape-html firstname)]
@@ -44,4 +47,5 @@
               [:td (escape-html contactemail)]
               [:td (escape-html contactphone)]
               [:td (escape-html comment)]]
-          [:div  #"\n" "<br>"])]]]]))
+          [:div  #"\n" "<br>"])]]]]
+      htmlfooter))
