@@ -9,7 +9,7 @@
         [hiccup.util]
         [hiccup.element]
         [course-mgmt.pagedefaults]
-        [java-time :only [local-date-time as]]))
+        [java-time :only [local-date-time format]]))
 
 
 (defn attendeelisting
@@ -38,8 +38,8 @@
           (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} attendees]
             [:tr
               (form-to [:delete "./list"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "entfernen"] (anti-forgery-field) ])
-              [:td (if timestamp
-                     (local-date-time timestamp))]
+              [:td [:small (if timestamp
+                     (format "dd/MM/yyyy HH:mm" (local-date-time timestamp)))]]
               [:td (escape-html firstname)]
               [:td (escape-html lastname)]
               [:td (escape-html birthdate)]

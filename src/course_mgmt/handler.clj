@@ -13,8 +13,7 @@
         [hiccup.page]
         [hiccup.form]
         [hiccup.util]
-        [course-mgmt.pagedefaults]
-        [java-time :only [local-date-time as]]))
+        [course-mgmt.pagedefaults]))
 
 (defn welcome
   [request]
