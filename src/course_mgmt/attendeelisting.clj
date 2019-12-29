@@ -20,20 +20,20 @@
     [:div.container
       navbar
       [:div.row [:h4 "Übersicht Anmeldungen:" ]]]
-    [:div.container {:data-offset-top "250"}
+    [:div.container
     ;; liste sortieren nach Anmeldedatum, Nachname, Listenplatz,
       [:table
         [:thead
           [:tr
-            [:td "Entfernen?"]
-            [:td [:b "Anmeldedatum"]]
-            [:td [:b "Vorname"]]
-            [:td [:b "Nachname"]]
-            [:td [:b "Geburtsdatum"]]
-            [:td [:b "Ansprechperson"]]
-            [:td [:b "Email"]]
-            [:td [:b "Telefon"]]
-            [:td [:b "Kommentar"]]]]
+            [:td ]
+            [:td "Anmeldedatum"]
+            [:td "Vorname"]
+            [:td "Nachname"]
+            [:td "Geburtsdatum"]
+            [:td "Ansprechperson"]
+            [:td "Email"]
+            [:td "Telefon"]
+            [:td "Kommentar"]]]
           [:tbody
           (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} attendees]
             [:tr

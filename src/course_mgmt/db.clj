@@ -33,10 +33,15 @@
 (defn get-course [id]
   (mc/find-one-as-map db "courses" { :_id (ObjectId. id)}))
 
-(defn course-manage [data]
-  (if (= (:id data) "nil")
-      (mc/insert db "courses" {:name (:name data) :state (:state data) :supervisor (:supervisor data)})
-      (mc/update-by-id db "courses" (ObjectId. (:id data)) {:name (:name data) :state (:state data) :supervisor (:supervisor data)})))
+(defn course-manage [input]
+  (if (= (:id input) "nil")
+      (mc/insert db "courses" {:name (:name input) :state (:state input) :supervisor (:supervisor input)})
+      ((def comparison (get-course (:id input)))
+        ;; compare if course-name changed & change it also for all attendees
+        (if-not (= (:id input) (:id comparison))
+          (mc/update db "attendees" {:course (:name comparison)} { $set {:course (:name input)} }))
+        (mc/update-by-id db "courses" (ObjectId. (:id input)) {:name (:name input) :state (:state input) :supervisor (:supervisor input)}))
+      ))
 
 (defn delete-course [id]
   (mc/remove-by-id db "courses" (ObjectId. id)))
