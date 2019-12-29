@@ -45,7 +45,7 @@
               [:td {:title (format "dd/MM/yyyy" (local-date birthdate))}
                     (.getYears (period (local-date birthdate) (local-date)))]
               [:td (escape-html contact)]
-              [:td (escape-html contactemail)]
+              [:td (mail-to (escape-html contactemail))]
               [:td (escape-html contactphone)]
               [:td (escape-html comment)]]
           [:div  #"\n" "<br>"])]]]]
