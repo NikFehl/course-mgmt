@@ -39,7 +39,7 @@
       ((def comparison (get-course (:id input)))
         ;; compare if course-name changed & change it also for all attendees
         (if-not (= (:id input) (:id comparison))
-          (mc/update db "attendees" {:course (:name comparison)} { $set {:course (:name input)} }))
+          (mc/update db "attendees" {:course (:name comparison)} { $set {:course (:name input)} } {:multi true}))
         (mc/update-by-id db "courses" (ObjectId. (:id input)) {:name (:name input) :state (:state input) :supervisor (:supervisor input)}))
       ))
 
