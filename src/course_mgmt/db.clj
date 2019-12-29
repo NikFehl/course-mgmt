@@ -21,13 +21,13 @@
 
 ;; for attendee-management:
 (defn insert-attendee [data]
-  (mc/insert db "users" data))
+  (mc/insert db "attendees" data))
 
 (defn list-attendees []
-    (mc/find-maps db "users"))
+    (mc/find-maps db "attendees"))
 
 (defn delete-attendee [id]
-  (mc/remove-by-id db "users" (ObjectId. id)))
+  (mc/remove-by-id db "attendees" (ObjectId. id)))
 
 ;; for course-management:
 (defn get-course [id]
@@ -42,5 +42,5 @@
   (mc/remove-by-id db "courses" (ObjectId. id)))
 
 (defn count-courseattendees [course]
-  (mc/count db "users" {:course course}))
+  (mc/count db "attendees" {:course course}))
 )

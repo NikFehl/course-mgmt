@@ -9,7 +9,7 @@
     [:div.row
       [:div.column
         [:b "Navigation: " ]
-        (link-to "/welcome" "Welcome") " | "
+        (link-to "/" "Welcome") " | "
         (link-to "/list" "AttendeeList") " | "
         (link-to "/register" "AttendeeRegistration") " | "
         (link-to "/courses/manage" "CoursesList")

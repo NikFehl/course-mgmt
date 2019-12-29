@@ -13,7 +13,7 @@
 
 
 (defn attendeelisting
-  [users]
+  [attendees]
   (html5  {:lang "en"}
   htmlheader
   [:body
@@ -35,7 +35,7 @@
             [:td [:b "Telefon"]]
             [:td [:b "Kommentar"]]]]
           [:tbody
-          (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} users]
+          (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} attendees]
             [:tr
               (form-to [:delete "./list"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "entfernen"] (anti-forgery-field) ])
               [:td (if timestamp
