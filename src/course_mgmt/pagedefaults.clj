@@ -1,4 +1,10 @@
-(ns course-mgmt.pagedefaults)
+(ns course-mgmt.pagedefaults
+  (:use
+        [hiccup.core]
+        [hiccup.page]
+        [hiccup.form]
+        [hiccup.util]
+        [hiccup.element] ))
 
 (def htmlheader
   [:head
