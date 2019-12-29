@@ -26,4 +26,13 @@
     (mc/find-maps db "users"))
 
 (defn delete-attendee [id]
-  (mc/remove-by-id db "users" (ObjectId. id))))
+  (mc/remove-by-id db "users" (ObjectId. id)))
+
+(defn get-course [id]
+  (mc/find-one-as-map db "courses" { :_id (ObjectId. id)}))
+
+(defn course-manage [data]
+  (if (= (:id data) "nil")
+      (mc/insert db "courses" {:name (:name data) :state (:state data) :supervisor (:supervisor data)})
+      (mc/update-by-id db "courses" (ObjectId. (:id data)) {:name (:name data) :state (:state data) :supervisor (:supervisor data)})))
+)

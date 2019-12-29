@@ -40,8 +40,12 @@
           (#'attendeelisting (db/list-attendees))))
   (GET "/list" [] (#'attendeelisting (db/list-attendees)))
   (GET "/courses/manage" [] #'courselist)
-;;  (POST "/courses/manage" [name state supervisor] #'coursemgmt)
-;;  (POST "/courses/:id" [] #'courseedit)
+  (POST "/courses/manage" [id name state supervisor]
+        (do
+          (db/course-manage {:id id :name name :state state :supervisor supervisor})
+          #'courselist))
+  (GET "/courses/insert" [] #'courseedit)
+  (POST "/courses/edit" [id] (courseedit id))
   (route/not-found "Not Found"))
 
 (def app
