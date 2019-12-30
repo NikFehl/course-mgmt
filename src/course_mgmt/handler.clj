@@ -39,6 +39,7 @@
           (db/delete-attendee id)
           (#'attendeelisting (db/list-attendees))))
   (GET "/list" [] (#'attendeelisting (db/list-attendees)))
+  (POST "/list" [course] (attendeelisting (db/list-attendees-filtered {:course course})))
   (GET "/courses/manage" [] #'courselist)
   (POST "/courses/manage" [id name state supervisor]
         (do

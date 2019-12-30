@@ -21,6 +21,9 @@
 (defn list-attendees []
     (mc/find-maps db "attendees"))
 
+(defn list-attendees-filtered [params]
+  (mc/find-maps db "attendees" {:course (:course params)}))
+
 (defn delete-attendee [id]
   (mc/remove-by-id db "attendees" (ObjectId. id)))
 

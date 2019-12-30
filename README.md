@@ -12,7 +12,7 @@ A simple Clojure-WebApplication Project for Course-Management. Including:
 
 - [Clojure](https://clojure.org/)
 
-- [Java](https://openjdk.java.net/) (OpenJDK), min Version: 8.0
+- [Java](https://openjdk.java.net/) (OpenJDK), Java min. Version: 8.0 due to java-time
 
 - [Leiningen](https://github.com/technomancy/leiningen) 2.0.0 or above
 

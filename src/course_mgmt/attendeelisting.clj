@@ -20,21 +20,31 @@
   [:body
     [:div.container
       navbar
-      [:div.row [:h4 "Übersicht Anmeldungen:" ]]]
+      [:div.row [:h4 "Übersicht Anmeldungen:" ]]
+      [:table
+        [:tr
+          (form-to [:post "./list"]
+          [:td ]
+          [:td
+            (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
+                (drop-down :course options))]
+          [:td
+            [:button {:type "submit"} "auswählen"] (anti-forgery-field) ]
+          [:td ][:td ] [:td ])]]]
     [:div.container
-    ;; liste sortieren nach Anmeldedatum, Nachname, Listenplatz,
+      [:div.row
       [:table
         [:thead
           [:tr
             [:td ]
-            [:td "Anmeldedatum"]
-            [:td "Vorname"]
-            [:td "Nachname"]
-            [:td "Alter"]
-            [:td "Ansprechperson"]
-            [:td "Email"]
-            [:td "Telefon"]
-            [:td "Kommentar"]]]
+            [:td [:b "Anmeldedatum"]]
+            [:td [:b "Vorname"]]
+            [:td [:b "Nachname"]]
+            [:td [:b "Alter"]]
+            [:td [:b "Ansprechperson"]]
+            [:td [:b "Email"]]
+            [:td [:b "Telefon"]]
+            [:td [:b "Kommentar"]]]]
           [:tbody
           (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} attendees]
             [:tr
@@ -49,5 +59,5 @@
               [:td (mail-to (escape-html contactemail))]
               [:td (escape-html contactphone)]
               [:td (escape-html comment)]]
-          [:div  #"\n" "<br>"])]]]]
+          [:div  #"\n" "<br>"])]]]]]
       htmlfooter))
