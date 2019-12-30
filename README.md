@@ -1,19 +1,52 @@
 # course-mgmt
 
-FIXME
+A simple Clojure-WebApplication Project for Course-Management. Including:
+ - RegistrationForm
+ - Course Creation
+ - List of Attendees
+
+-> Project was a bit inspired by "https://github.com/citerus/notes".
+   For Design "https://milligram.io" was used.
 
 ## Prerequisites
 
-You will need [Leiningen][] 2.0.0 or above installed.
-
-[leiningen]: https://github.com/technomancy/leiningen
+- [Clojure][]
+[Clojure]: https://clojure.org/
+- [Java][] (OpenJDK), min Version: 8.0
+[Java]: https://openjdk.java.net/
+- [Leiningen][] 2.0.0 or above
+[Leiningen]: https://github.com/technomancy/leiningen
+- [MongoDB][]
+[MongoDB]: https://www.mongodb.com
 
 ## Running
 
 To start a web server for the application, run:
 
     lein ring server
+or
+    lein run [port]
 
 ## License
 
-Copyright © 2019 FIXME
+MIT License
+
+Copyright (c) 2019 Niklas Fehl
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
