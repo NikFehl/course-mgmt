@@ -27,12 +27,12 @@
 
 
 (defroutes app-routes
+  "Default Routing for all incoming requests"
   (GET "/" [] #'welcome)
   (GET "/register" [] #'attendeeregistration)
   (POST "/register" [course firstname lastname birthdate contact contactemail contactphone comment]
         (do
           (db/insert-attendee {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment :timestamp (java.util.Date.)})
-          ;;  :time (java.util.Date.) - UTC Zeit
           (#'attendeelisting (db/list-attendees))))
   (DELETE "/list" [id]
         (do

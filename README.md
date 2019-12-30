@@ -24,8 +24,11 @@ A simple Clojure-WebApplication Project for Course-Management. Including:
 To start a web server for the application, run:
 
     lein ring server
+
 or
+
     lein run [port]
+
 
 ## License
 

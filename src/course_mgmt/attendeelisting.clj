@@ -13,6 +13,7 @@
 
 
 (defn attendeelisting
+  "List all attendees, incl. age-calculation in years and contact details"
   [attendees]
   (html5  {:lang "en"}
   htmlheader

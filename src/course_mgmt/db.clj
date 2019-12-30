@@ -6,17 +6,12 @@
   (:import  org.bson.types.ObjectId
             [com.mongodb MongoOptions]))
 
-;; localhost, default port
+;; localhost, default port, just connect
 (let [conn  (mg/connect)
       db   (mg/get-db conn "mongo-test")]
 
-;; not needed now:
-;;(defn- transform-id-to-string [document]
-;;  (if-let [id (:_id document)]
-;;  (assoc document :_id (.toString id))))
 
 (defn get-all [collection]
-;;  (map transform-id-to-string (mc/find-maps db collection))))
     (mc/find-maps db collection))
 
 ;; for attendee-management:
@@ -34,6 +29,7 @@
   (mc/find-one-as-map db "courses" { :_id (ObjectId. id)}))
 
 (defn course-manage [input]
+  "Depending on input, it will insert a new project or change an existing one."
   (if (= (:id input) "nil")
       (mc/insert db "courses" {:name (:name input) :state (:state input) :supervisor (:supervisor input)})
       ((def comparison (get-course (:id input)))

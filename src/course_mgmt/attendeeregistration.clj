@@ -11,6 +11,7 @@
         [course-mgmt.pagedefaults]))
 
 (defn attendeeregistration
+  "Registration Form."
   [request]
     (html5  {:lang "en"}
       htmlheader

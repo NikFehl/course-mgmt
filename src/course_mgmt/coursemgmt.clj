@@ -12,6 +12,8 @@
         [java-time :only [local-date-time as]]))
 
 (defn courseedit
+  "Depending on input, it will give you a form for editing
+   an existing project (and deletion button) or for creation of a new one."
   [id]
   (if (= id "nil")
       ((def course {:_id "nil" :name "Name" :state "deaktiviert" :supervisor "Verantwortlicher"})
@@ -38,7 +40,6 @@
           [:tbody
             [:tr
               (form-to [:post "./manage"]
-              ;; Problem: Namensänderung des Kurses bei aktivem Kurs...
               [:td (text-field :name (:name course))]
               [:td (let [options ["aktiv" "deaktiviert"]
                     selected (:state course)]
@@ -49,6 +50,7 @@
       htmlfooter))
 
 (defn courselist
+  "Simple listing of all courses with attendee-count."
   [params]
     (let [courses (db/get-all "courses")]
     (html5  {:lang "en"}
