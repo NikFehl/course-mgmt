@@ -28,8 +28,9 @@
           (form-to [:post "./list"]
           [:td ]
           [:td
-            (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
-                (drop-down :course options))]
+            (let [options (conj (for [{:keys [name]} (db/get-all "courses")] name) "Alle Kurse")
+                  selected "Alle Kurse"]
+                (drop-down :course options selected))]
           [:td
             (let [options ["Nachname" "Vorname" "Anmeldedatum" "Alter" "ohne Sortierung"]
                   selected "ohne Sortierung"]
@@ -37,8 +38,8 @@
           [:td
             [:button {:type "submit"} "auswählen"] (anti-forgery-field) ]
           [:td ][:td ] [:td ])]]]
-    [:div.container
-      [:div.row
+  ;;  [:div.container
+    ;;  [:div.row
       [:table
         [:thead
           [:tr
@@ -65,5 +66,6 @@
               [:td (mail-to (escape-html contactemail))]
               [:td (escape-html contactphone)]
               [:td (escape-html comment)]]
-          [:div  #"\n" "<br>"])]]]]]
+          [:div  #"\n" "<br>"])]]
+          ] ;;]]
       htmlfooter))

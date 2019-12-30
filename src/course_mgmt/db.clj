@@ -24,8 +24,12 @@
     (mc/find-maps db "attendees"))
 
 (defn list-attendees-filtered [params]
+  "sorts and filters attendees on some attributes"
+  (if (= (:course params) "Alle Kurse")
+    (def course-filter (array-map ))
+    (def course-filter (array-map :course (:course params))))
   (if (= (:sort-for params) "ohne Sortierung")
-    (mc/find-maps db "attendees" {:course (:course params)})
+    (mc/find-maps db "attendees" course-filter)
     (let [sorting-for
       (case (:sort-for params)
         ("Nachname") :lastname
@@ -33,8 +37,8 @@
         ("Anmeldedatum") :timestamp
         ("Alter") :birthdate)]
       (mq/with-collection db "attendees"
-        (mq/find {:course (:course params)})
-        (mq/sort { sorting-for 1 })))))
+        (mq/find course-filter)
+        (mq/sort (array-map sorting-for 1 ))))))
 
 (defn delete-attendee [id]
   (mc/remove-by-id db "attendees" (ObjectId. id)))
