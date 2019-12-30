@@ -10,13 +10,13 @@ A simple Clojure-WebApplication Project for Course-Management. Including:
 
 ## Prerequisites
 
-- [Clojure][]
+[Clojure][]
 [Clojure]: https://clojure.org/
-- [Java][] (OpenJDK), min Version: 8.0
+[Java][] (OpenJDK), min Version: 8.0
 [Java]: https://openjdk.java.net/
-- [Leiningen][] 2.0.0 or above
+[Leiningen][] 2.0.0 or above
 [Leiningen]: https://github.com/technomancy/leiningen
-- [MongoDB][]
+[MongoDB][]
 [MongoDB]: https://www.mongodb.com
 
 ## Running
