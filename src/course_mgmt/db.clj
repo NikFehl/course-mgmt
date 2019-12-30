@@ -1,8 +1,10 @@
 (ns course-mgmt.db
   (:require [monger.core :as mg]
             [monger.collection :as mc]
+            [monger.query :as mq]
             [monger.operators :refer :all]
-            [monger.joda-time])
+            [monger.joda-time]
+            [clojure.tools.logging :as log])
   (:import  org.bson.types.ObjectId
             [com.mongodb MongoOptions]))
 
@@ -22,7 +24,16 @@
     (mc/find-maps db "attendees"))
 
 (defn list-attendees-filtered [params]
-  (mc/find-maps db "attendees" {:course (:course params)}))
+  (if (= (:sort-for params) "ohne Sortierung")
+    (mc/find-maps db "attendees" {:course (:course params)})
+    (let [sorting-for
+      (case (:sort-for params)
+        ("Nachname") :lastname
+        ("Vorname") :firstname
+        ("Anmeldedatum") :timestamp)]
+      (mq/with-collection db "attendees"
+        (mq/find {:course (:course params)})
+        (mq/sort { sorting-for 1 })))))
 
 (defn delete-attendee [id]
   (mc/remove-by-id db "attendees" (ObjectId. id)))

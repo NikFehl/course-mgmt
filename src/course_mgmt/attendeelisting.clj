@@ -1,5 +1,6 @@
 (ns course-mgmt.attendeelisting
   (:require [ring.util.response]
+            [clojure.tools.logging :as log]
             [course-mgmt.db :as db]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
@@ -22,12 +23,17 @@
       navbar
       [:div.row [:h4 "Übersicht Anmeldungen:" ]]
       [:table
+      (log/info "zeige alle Teilnehmer...")
         [:tr
           (form-to [:post "./list"]
           [:td ]
           [:td
             (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
                 (drop-down :course options))]
+          [:td
+            (let [options ["Nachname" "Vorname" "Anmeldedatum" "ohne Sortierung"]
+                  selected "ohne Sortierung"]
+                (drop-down :sort-for options selected))]
           [:td
             [:button {:type "submit"} "auswählen"] (anti-forgery-field) ]
           [:td ][:td ] [:td ])]]]
