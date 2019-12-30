@@ -31,7 +31,7 @@
             (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
                 (drop-down :course options))]
           [:td
-            (let [options ["Nachname" "Vorname" "Anmeldedatum" "ohne Sortierung"]
+            (let [options ["Nachname" "Vorname" "Anmeldedatum" "Alter" "ohne Sortierung"]
                   selected "ohne Sortierung"]
                 (drop-down :sort-for options selected))]
           [:td

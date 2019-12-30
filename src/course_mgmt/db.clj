@@ -30,7 +30,8 @@
       (case (:sort-for params)
         ("Nachname") :lastname
         ("Vorname") :firstname
-        ("Anmeldedatum") :timestamp)]
+        ("Anmeldedatum") :timestamp
+        ("Alter") :birthdate)]
       (mq/with-collection db "attendees"
         (mq/find {:course (:course params)})
         (mq/sort { sorting-for 1 })))))
