@@ -18,7 +18,9 @@
 
 ;; for attendee-management:
 (defn insert-attendee [data]
-  (mc/insert db "attendees" data))
+  (merge
+    (mc/insert-and-return db "attendees" data)
+    {:position (mc/count db "attendees" {:course (:course data)})}))
 
 (defn list-attendees []
     (mc/find-maps db "attendees"))

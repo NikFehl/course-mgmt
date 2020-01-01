@@ -4,7 +4,7 @@
             [ring.util.response]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [course-mgmt.db :as db]
-            [course-mgmt.attendeeregistration :refer [attendeeregistration]]
+            [course-mgmt.attendeeregistration :refer [attendeeregistration registrationresult]]
             [course-mgmt.attendeelisting :refer [attendeelisting]]
             [course-mgmt.coursemgmt :refer :all]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
@@ -31,9 +31,7 @@
   (GET "/" [] #'welcome)
   (GET "/register" [] #'attendeeregistration)
   (POST "/register" [course firstname lastname birthdate contact contactemail contactphone comment]
-        (do
-          (db/insert-attendee {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment :timestamp (java.util.Date.)})
-          (#'attendeelisting (db/list-attendees))))
+          (registrationresult (db/insert-attendee {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment :timestamp (java.util.Date.)})))
   (DELETE "/list" [id]
         (do
           (db/delete-attendee id)
