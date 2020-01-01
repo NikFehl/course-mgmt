@@ -1,4 +1,5 @@
 (ns course-mgmt.attendeelisting
+  (:refer-clojure :exclude [format])
   (:require [ring.util.response]
             [clojure.tools.logging :as log]
             [course-mgmt.db :as db]
