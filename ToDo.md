@@ -1,14 +1,14 @@
-# ToDo-List
+## ToDo-List
 
 - check inputs on inserts (new registration)
-- generate queue-number for attendee
+- generate queue-number for attendee (on sort)
 - show results and queue-number after registration
-- re-numbering of attendees after deleting one
+- make use of active/deactive courses
 
 
 
 
-# for the far future...
+## for the far future...
 
 - login page
 - make course management only available after login

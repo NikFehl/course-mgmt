@@ -45,6 +45,8 @@
           [:tr
             [:td ]
             [:td [:b "Anmeldedatum"]]
+            (if (:position (first (seq attendees)))
+              [:td [:b "Listenplatz"]])
             [:td [:b "Vorname"]]
             [:td [:b "Nachname"]]
             [:td [:b "Alter"]]
@@ -53,11 +55,13 @@
             [:td [:b "Telefon"]]
             [:td [:b "Kommentar"]]]]
           [:tbody
-          (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} attendees]
+          (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment, position]} attendees]
             [:tr
               (form-to [:delete "./list"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "entfernen"] (anti-forgery-field) ])
               [:td [:small
                      (format "dd/MM/yyyy HH:mm" (local-date-time timestamp))]]
+              (if position
+                [:td {:style "text-align: center;"} position])
               [:td (escape-html firstname)]
               [:td (escape-html lastname)]
               [:td {:title (format "dd/MM/yyyy" (local-date birthdate))}
