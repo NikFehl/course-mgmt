@@ -23,7 +23,6 @@
       navbar
       [:div.row [:h4 "Übersicht Anmeldungen:" ]]
       [:table
-      (log/info "zeige alle Teilnehmer...")
         [:tr
           (form-to [:post "./list"]
           [:td ]
