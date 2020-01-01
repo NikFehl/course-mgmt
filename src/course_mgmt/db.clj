@@ -23,26 +23,17 @@
 (defn list-attendees []
     (mc/find-maps db "attendees"))
 
-(defn attendees-sorted
-  "gets attendees sorted via :sort-for and optional :course"
+(defn get-attendee-position
+  "get list of attendees sorted by :position"
   [params]
-  (let [sorting-for (case (:sort-for params)
-                          ("Nachname") :lastname
-                          ("Vorname") :firstname
-                          ("Anmeldedatum") :timestamp
-                          ("Alter") :birthdate)
-        course-filter (if (= (:course params) "Alle Kurse")
-                          (array-map )
-                          (array-map :course (:course params)))]
-    (mq/with-collection db "attendees"
-      (mq/find course-filter)
-      (mq/sort (array-map sorting-for 1 )))))
-
-(defn attendees-filtered
-  "gets attendees filtered via :course"
-  [params]
-  (let [course-filter (array-map :course (:course params))]
-    (mc/find-maps db "attendees" course-filter)))
+  (loop [loopobject (mc/find-maps db "attendees" {:course (:course params)})
+         outputobject []
+         pos 1]
+      (if (seq loopobject)
+        (recur (rest loopobject)
+               (merge outputobject (merge (first loopobject) {:position pos}))
+               (inc pos))
+       outputobject)))
 
 (defn get-attendees
   "gets attendees with sorts :sort-for and filter :course"
@@ -53,16 +44,17 @@
       ;; plain result without sort or filter
       (list-attendees)
       ;; result with course-filter and loop for adding position-number
-      (loop [loopobject (attendees-filtered {:course (:course params)})
-             outputobject []
-             pos 1]
-        (if (seq loopobject)
-          (recur (rest loopobject)
-                 (merge outputobject (merge (first loopobject) {:position pos}))
-                 (inc pos))
-          outputobject)))
+      (get-attendee-position {:course (:course params)}))
     ;; with sorting
-    (attendees-sorted {:sort-for (:sort-for params) :course (:course params)})))
+    (let [sorting-for (case (:sort-for params)
+                            ("Nachname") :lastname
+                            ("Vorname") :firstname
+                            ("Anmeldedatum") :timestamp
+                            ("Alter") :birthdate)]
+      (if (= (:course params) "Alle Kurse")
+        (sort-by sorting-for (list-attendees))
+        (sort-by sorting-for (get-attendee-position {:course (:course params)}))))
+    ))
 
 (defn delete-attendee [id]
   (mc/remove-by-id db "attendees" (ObjectId. id)))
