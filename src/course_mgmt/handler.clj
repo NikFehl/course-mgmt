@@ -6,6 +6,7 @@
             [course-mgmt.db :as db]
             [course-mgmt.attendeeregistration :refer [attendeeregistration registrationresult]]
             [course-mgmt.attendeelisting :refer [attendeelisting]]
+            [course-mgmt.attendeeedit :refer [attendeeedit]]
             [course-mgmt.coursemgmt :refer :all]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
@@ -33,6 +34,15 @@
   (POST "/register" [course firstname lastname birthdate contact contactemail contactphone comment]
           (registrationresult (db/insert-attendee {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment :timestamp (java.util.Date.)})))
   (DELETE "/list" [id]
+        (do
+          (db/delete-attendee id)
+          (#'attendeelisting (db/list-attendees))))
+  (POST "/attendees/manage" [id] (attendeeedit(db/get-attendee id)))
+  (POST "/attendees/edit" [id course firstname lastname birthdate contact contactemail contactphone comment]
+        (do
+          (db/edit-attendee {:id id :course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment})
+          (#'attendeelisting (db/list-attendees))))
+  (DELETE "/attendees/edit" [id]
         (do
           (db/delete-attendee id)
           (#'attendeelisting (db/list-attendees))))

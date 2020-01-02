@@ -1,6 +1,6 @@
 (defproject course-mgmt "0.1.0-SNAPSHOT"
   :description "For managing courses. functions: registration, waitlist, auto-reply"
-  :url "http://example.com/FIXME"
+  :url "https://github.com/NikFehl/course-mgmt"
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [compojure "1.6.1"]

@@ -57,7 +57,7 @@
           [:tbody
           (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment, position]} attendees]
             [:tr
-              (form-to [:delete "./list"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "entfernen"] (anti-forgery-field) ])
+              (form-to [:post "/attendees/manage"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "bearbeiten"] (anti-forgery-field) ])
               [:td [:small
                      (format "dd/MM/yyyy HH:mm" (local-date-time timestamp))]]
               (if position

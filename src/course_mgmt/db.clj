@@ -25,6 +25,15 @@
 (defn list-attendees []
     (mc/find-maps db "attendees"))
 
+(defn get-attendee
+  [id]
+  (mc/find-one-as-map db "attendees" { :_id (ObjectId. id)}))
+
+(defn edit-attendee
+  [params]
+  (log/info params)
+  (mc/update-by-id db "attendees" (ObjectId. (:id params)) { $set {:firstname (:firstname params) :lastname (:lastname params) :course (:course params) :birthdate (:birthdate params) :contact (:contact params) :contactphone (:contactphone params) :contactemail (:contactemail params) :comment (:comment params)} } ))
+
 (defn get-attendee-position
   "get list of attendees sorted by :position"
   [params]
@@ -68,7 +77,6 @@
 (defn get-courses-filtered
   "Get courses filter (by status for example)"
   [params]
-  (log/info params)
   (mc/find-maps db "courses" params))
 
 (defn course-manage
