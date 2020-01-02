@@ -73,7 +73,7 @@
                     [:div.column.column-25 [:label "Kurs:"]]
                     [:div.column.column-25
                     ;; Status wird nicht berücksichtigt
-                        (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
+                        (let [options (for [{:keys [name]} (db/get-courses-filtered {:state "aktiv"})] name)]
                         (drop-down :course options))]]
                 [:div.row
                     [:div.column.column-25 [:label "Vorname:"]]

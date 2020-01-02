@@ -33,7 +33,7 @@
           [:thead
             [:tr
               [:td [:b "Name"]]
-              [:td [:b "Status"]]
+              [:td [:b "Anmeldung"]]
               [:td [:b "Verantwortlicher"]]
               [:td ]
               [:td ]]]
@@ -66,7 +66,7 @@
                 (form-to [:post "./edit"]
                   [:td  (hidden-field :id "nil") [:button {:type "submit"} "Neuen Kurs anlegen"] (anti-forgery-field) ])
                 [:td [:b "Kursname"]]
-                [:td [:b "Status"]]
+                [:td [:b "Anmeldung"]]
                 [:td [:b "Verantwortlicher"]]
                 [:td [:b "Anzahl Teilnehmer"]]]]
             [:tbody

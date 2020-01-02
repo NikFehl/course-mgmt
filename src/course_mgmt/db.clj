@@ -65,8 +65,15 @@
 (defn get-course [id]
   (mc/find-one-as-map db "courses" { :_id (ObjectId. id)}))
 
-(defn course-manage [input]
+(defn get-courses-filtered
+  "Get courses filter (by status for example)"
+  [params]
+  (log/info params)
+  (mc/find-maps db "courses" params))
+
+(defn course-manage
   "Depending on input, it will insert a new project or change an existing one."
+  [input]
   (if (= (:id input) "nil")
       (mc/insert db "courses" {:name (:name input) :state (:state input) :supervisor (:supervisor input)})
       ((def comparison (get-course (:id input)))
