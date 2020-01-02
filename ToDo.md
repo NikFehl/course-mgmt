@@ -1,7 +1,6 @@
 ## ToDo-List
 
 - check inputs on inserts (new registration)
-- make use of active/deactive courses
 - edit users
 
 
