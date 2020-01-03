@@ -13,7 +13,7 @@
 (def navbar
   [:div.container
     [:div.row
-      [:div.column
+      [:div.column.column-offset-25
         [:b "Navigation: " ]
         (link-to "/" "Welcome") " | "
         (link-to "/list" "AttendeeList") " | "

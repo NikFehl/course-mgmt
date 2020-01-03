@@ -23,7 +23,6 @@
       navbar
       [:div.row
         [:div.column.column-offset-25.column-25 [:h4 "Anmeldung ändern:" ]]]
-  ;;  [:div.container
       (form-to [:post "/attendees/edit"] (hidden-field :id (:_id params))
       [:div.row
         [:div.column.column-offset-25.column-25 [:b "Kurs"]]
@@ -50,7 +49,7 @@
         [:div.column.column-25 (text-field :contactphone (escape-html (:contactphone params)))]]
       [:div.row
         [:div.column.column-offset-25.column-25 [:b "Kommentar"]]
-        [:div.column.column-25 (text-field :comment (escape-html (:comment params)))]]
+        [:div.column.column-25 (text-area {:rows 5} :comment (escape-html (:comment params)))]]
       [:div.row
         [:div.column.column-offset-25.column-25 ]
         [:div.column.column-25 [:button {:type "submit"} "Änderungen speichern"] (anti-forgery-field) ]])

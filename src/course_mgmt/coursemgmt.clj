@@ -1,6 +1,7 @@
 (ns course-mgmt.coursemgmt
   (:require [ring.util.response]
             [course-mgmt.db :as db]
+            [clojure.tools.logging :as log]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
         [hiccup.core]
@@ -27,7 +28,8 @@
     [:body
       [:div.container
         navbar
-        [:div.row [:h4 "Neuen Kurs anlegen"]]]
+        [:div.row
+          [:div.column [:h4 "Kurs " btntype ]]]]
       [:div.container
         [:table
           [:thead

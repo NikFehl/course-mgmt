@@ -31,7 +31,6 @@
 
 (defn edit-attendee
   [params]
-  (log/info params)
   (mc/update-by-id db "attendees" (ObjectId. (:id params)) { $set {:firstname (:firstname params) :lastname (:lastname params) :course (:course params) :birthdate (:birthdate params) :contact (:contact params) :contactphone (:contactphone params) :contactemail (:contactemail params) :comment (:comment params)} } ))
 
 (defn get-attendee-position
