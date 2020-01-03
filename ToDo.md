@@ -1,7 +1,6 @@
 ## ToDo-List
 
 - check inputs on inserts (new registration)
-- edit users
 
 
 ## for the far future...
