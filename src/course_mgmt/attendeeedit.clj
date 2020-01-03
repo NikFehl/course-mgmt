@@ -21,37 +21,41 @@
   [:body
     [:div.container
       navbar
-      [:div.row [:h4 "Anmeldung ändern:" ]]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:h4 "Anmeldung ändern:" ]]]
   ;;  [:div.container
-    ;;  [:div.row
-      [:table
-        [:thead
-          [:tr
-            [:td [:b "Kurs"]]
-            [:td [:b "Vorname"]]
-            [:td [:b "Nachname"]]
-            [:td [:b "Geburtsdatum"]]
-            [:td [:b "Ansprechperson"]]
-            [:td [:b "Email"]]
-            [:td [:b "Telefon"]]
-            [:td [:b "Kommentar"]]
-            [:td ]
-            [:td ]]]
-          [:tbody
-            [:tr
-              (log/info (:_id params))
-              (form-to [:post "/attendees/edit"] (hidden-field :id (:_id params))
-              [:td
-                (let [options (for [{:keys [name]} (db/get-courses-filtered {:state "aktiv"})] name)]
-                  (drop-down :course options))]
-              [:td (text-field :firstname (escape-html (:firstname params)))]
-              [:td (text-field :lastname (escape-html (:lastname params)))]
-              [:td (text-field :birthdate (escape-html (:birthdate params)))]
-              [:td (text-field :contact (escape-html (:contact params)))]
-              [:td (text-field :contactemail (escape-html (:contactemail params)))]
-              [:td (text-field :contactphone (escape-html (:contactphone params)))]
-              [:td (text-field :comment (escape-html (:comment params)))]
-              [:td  [:button {:type "submit"} "speichern"] (anti-forgery-field) ])
-              [:td (form-to [:delete "/attendees/edit"] [:td (hidden-field :id (:_id params)) [:button.button-clear {:type "submit"} "Teilnehmer löschen"] (anti-forgery-field)])]]]
-          ]]
-      htmlfooter))
+      (form-to [:post "/attendees/edit"] (hidden-field :id (:_id params))
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Kurs"]]
+        [:div.column.column-25
+          (let [options (for [{:keys [name]} (db/get-all "courses")] name)]
+            (drop-down :course options))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Vorname"]]
+        [:div.column.column-25 (text-field :firstname (escape-html (:firstname params)))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Nachname"]]
+        [:div.column.column-25 (text-field :lastname (escape-html (:lastname params)))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Geburtsdatum"]]
+        [:div.column.column-25 (text-field :birthdate (escape-html (:birthdate params)))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Ansprechperson"]]
+        [:div.column.column-25 (text-field :contact (escape-html (:contact params)))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Email"]]
+        [:div.column.column-25 (text-field :contactemail (escape-html (:contactemail params)))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Telefon"]]
+        [:div.column.column-25 (text-field :contactphone (escape-html (:contactphone params)))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 [:b "Kommentar"]]
+        [:div.column.column-25 (text-field :comment (escape-html (:comment params)))]]
+      [:div.row
+        [:div.column.column-offset-25.column-25 ]
+        [:div.column.column-25 [:button {:type "submit"} "Änderungen speichern"] (anti-forgery-field) ]])
+      [:div.row
+        [:div.column.column-offset-25.column-25 ]
+        [:div.column.column-25 (form-to [:delete "/attendees/edit"] [:td (hidden-field :id (:_id params)) [:button.button-clear {:type "submit"} "Teilnehmer löschen"] (anti-forgery-field)]) ]]
+      ]]
+  htmlfooter))
