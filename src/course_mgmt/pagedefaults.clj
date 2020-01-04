@@ -16,8 +16,8 @@
       [:div.column.column-offset-25
         [:b "Navigation: " ]
         (link-to "/" "Welcome") " | "
-        (link-to "/list" "AttendeeList") " | "
-        (link-to "/register" "AttendeeRegistration") " | "
+        (link-to "/attendees/list" "AttendeeList") " | "
+        (link-to "/attendees/register" "AttendeeRegistration") " | "
         (link-to "/courses/manage" "CoursesList")
         ]]
     [:div.row

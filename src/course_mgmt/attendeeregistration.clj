@@ -68,7 +68,7 @@
           [:div.row
             [:div.column.column-offset-25 [:h4 "Anmeldung" ]]]]
         [:div.container {:style "data-offset-top: 150;"}
-            (form-to [:post "./register"]
+            (form-to [:post "/attendees/register"]
               [:fieldset
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Kurs:"]]

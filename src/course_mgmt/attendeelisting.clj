@@ -25,7 +25,7 @@
       [:div.row [:h4 "Übersicht Anmeldungen:" ]]
       [:table
         [:tr
-          (form-to [:post "./list"]
+          (form-to [:post "/attendees/list"]
           [:td ]
           [:td
             (let [options (conj (for [{:keys [name]} (db/get-all "courses")] name) "Alle Kurse")

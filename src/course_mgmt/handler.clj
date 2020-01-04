@@ -1,7 +1,7 @@
 (ns course-mgmt.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [ring.util.response]
+            [ring.util.response :as ring]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [course-mgmt.db :as db]
             [course-mgmt.attendeeregistration :refer [attendeeregistration registrationresult]]
@@ -30,24 +30,20 @@
 (defroutes app-routes
   "Default Routing for all incoming requests"
   (GET "/" [] #'welcome)
-  (GET "/register" [] #'attendeeregistration)
-  (POST "/register" [course firstname lastname birthdate contact contactemail contactphone comment]
+  (GET "/attendees/register" [] #'attendeeregistration)
+  (POST "/attendees/register" [course firstname lastname birthdate contact contactemail contactphone comment]
           (registrationresult (db/insert-attendee {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment :timestamp (java.util.Date.)})))
-  (DELETE "/list" [id]
-        (do
-          (db/delete-attendee id)
-          (#'attendeelisting (db/list-attendees))))
   (POST "/attendees/manage" [id] (attendeeedit(db/get-attendee id)))
   (POST "/attendees/edit" [id course firstname lastname birthdate contact contactemail contactphone comment]
         (do
           (db/edit-attendee {:id id :course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment})
-          (#'attendeelisting (db/list-attendees))))
+          (ring/redirect "/attendees/list")))
   (DELETE "/attendees/edit" [id]
         (do
           (db/delete-attendee id)
-          (#'attendeelisting (db/list-attendees))))
-  (GET "/list" [] (#'attendeelisting (db/list-attendees)))
-  (POST "/list" [course sort-for] (attendeelisting (db/get-attendees {:course course :sort-for sort-for})))
+          (ring/redirect "/attendees/list")))
+  (GET "/attendees/list" [] (#'attendeelisting (db/list-attendees)))
+  (POST "/attendees/list" [course sort-for] (attendeelisting (db/get-attendees {:course course :sort-for sort-for})))
   (GET "/courses/manage" [] #'courselist)
   (POST "/courses/manage" [id name state supervisor]
         (do
