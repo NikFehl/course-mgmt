@@ -6,6 +6,7 @@ A simple Clojure-WebApplication for Course-Management. Including:
  - List of Attendees
 
 -> This project is my "learning-Clojure" project. Some bits of code are inspired by "https://github.com/citerus/notes".
+
    For Design "https://milligram.io" was used.
 
 ## Prerequisites
@@ -26,6 +27,7 @@ To start the application, run:
     lein run
 
 Default: MongoDB without auth on localhost & default port. Jetty binds to localhost & port 8000
+
 Please edit "config/db.edn" & "config/jetty.edn" for your needs.
 
 
