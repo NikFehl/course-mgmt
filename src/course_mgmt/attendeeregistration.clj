@@ -3,6 +3,7 @@
   (:require
         [course-mgmt.db :as db]
         [clojure.tools.logging :as log]
+        [course-mgmt.inputchecker :refer [verify-registration-inputs]]
         [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
         [hiccup.core]
@@ -12,6 +13,7 @@
         [hiccup.element]
         [course-mgmt.pagedefaults]
         [java-time :only [local-date format]]))
+
 
 (defn registrationresult
   "show results of registration"
@@ -59,44 +61,47 @@
 
 (defn attendeeregistration
   "Registration Form."
-  [request]
+  [params]
     (html5  {:lang "en"}
       htmlheader
       [:body
         [:div.container
           navbar
           [:div.row
-            [:div.column.column-offset-25 [:h4 "Anmeldung" ]]]]
+            [:div.column.column-offset-25 [:h4 "Anmeldung" ]]]
+          [:div.row
+            [:div.column.column-offset-25
+              [:p {:style "color: red;"}(:checkresult params)]]]]
         [:div.container {:style "data-offset-top: 150;"}
             (form-to [:post "/attendees/register"]
               [:fieldset
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Kurs:"]]
                     [:div.column.column-25
-                    ;; Status wird nicht berücksichtigt
-                        (let [options (for [{:keys [name]} (db/get-courses-filtered {:state "aktiv"})] name)]
-                        (drop-down :course options))]]
+                        (let [options (for [{:keys [name]} (db/get-courses-filtered {:state "aktiv"})] name)
+                              selected (:course params)]
+                        (drop-down :course options selected))]]
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Vorname:"]]
-                    [:div.column.column-25 (text-field {:required "true"} :firstname)]]
+                    [:div.column.column-25 (text-field {:required "true"} :firstname (:firstname params))]]
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Nachname:"]]
-                    [:div.column.column-25 (text-field {:required "true"} :lastname)]]
+                    [:div.column.column-25 (text-field {:required "true"} :lastname (:lastname params))]]
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Geburtsdatum:"]]
-                    [:div.column.column-25 [:input {:id "birthdate" :name "birthdate" :type "date" :required "true"}]]]
+                    [:div.column.column-25 [:input {:id "birthdate" :name "birthdate" :type "date" :required "true" :value (:birthdate params)}]]]
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Ansprechperson:"]]
-                    [:div.column.column-25 (text-field {:required "true"} :contact)]]
+                    [:div.column.column-25 (text-field {:required "true"} :contact (:contact params))]]
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Email:"]]
-                    [:div.column.column-25 (text-field {:required "true"} :contactemail)]]
+                    [:div.column.column-25 (text-field {:required "true"} :contactemail (:contactemail params))]]
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Telefon:"]]
-                    [:div.column.column-25 (text-field :contactphone)]]
+                    [:div.column.column-25 (text-field :contactphone (:contactphone params))]]
                 [:div.row
                     [:div.column.column-25.column-offset-25 [:label "Kommentar:"]]
-                    [:div.column.column-25 (text-area {:rows 5} :comment)]]
+                    [:div.column.column-25 (text-area {:rows 5} :comment (:comment params))]]
                 [:div.row
                     [:div.column.column-offset-25 [:input {:type "checkbox" :required "true"}] "Hiermit bestätige ich, dass meine Daten für die Anmeldung gespeichert werden. "]]
                 [:div.row
@@ -104,3 +109,11 @@
                     (anti-forgery-field)])]]
       htmlfooter
       [:headers {}]))
+
+
+(defn check-registration
+  [params]
+  (let [checkresult (verify-registration-inputs params)]
+    (if (= checkresult "Alle Eingaben ok")
+      (registrationresult (db/insert-attendee {:course (:course params) :firstname (:firstname params) :lastname (:lastname params) :birthdate (:birthdate params) :contact (:contact params) :contactemail (:contactemail params) :contactphone (:contactphone params) :comment (:comment params) :timestamp (java.util.Date.)}))
+      (attendeeregistration (merge params {:checkresult checkresult})))))

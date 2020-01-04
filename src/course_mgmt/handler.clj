@@ -2,9 +2,10 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.util.response :as ring]
+            [clojure.tools.logging :as log]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [course-mgmt.db :as db]
-            [course-mgmt.attendeeregistration :refer [attendeeregistration registrationresult]]
+            [course-mgmt.attendeeregistration :refer [attendeeregistration check-registration]]
             [course-mgmt.attendeelisting :refer [attendeelisting]]
             [course-mgmt.attendeeedit :refer [attendeeedit]]
             [course-mgmt.coursemgmt :refer :all]
@@ -32,7 +33,7 @@
   (GET "/" [] #'welcome)
   (GET "/attendees/register" [] #'attendeeregistration)
   (POST "/attendees/register" [course firstname lastname birthdate contact contactemail contactphone comment]
-          (registrationresult (db/insert-attendee {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment :timestamp (java.util.Date.)})))
+          (check-registration {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment}))
   (POST "/attendees/manage" [id] (attendeeedit(db/get-attendee id)))
   (POST "/attendees/edit" [id course firstname lastname birthdate contact contactemail contactphone comment]
         (do
