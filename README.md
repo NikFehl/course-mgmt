@@ -1,11 +1,11 @@
 # course-mgmt
 
-A simple Clojure-WebApplication Project for Course-Management. Including:
+A simple Clojure-WebApplication for Course-Management. Including:
  - RegistrationForm
  - Course Creation
  - List of Attendees
 
--> Project was a bit inspired by "https://github.com/citerus/notes".
+-> This project is my "learning-Clojure" project. Some bits of code are inspired by "https://github.com/citerus/notes".
    For Design "https://milligram.io" was used.
 
 ## Prerequisites
@@ -21,13 +21,12 @@ A simple Clojure-WebApplication Project for Course-Management. Including:
 
 ## Running
 
-To start a web server for the application, run:
+To start the application, run:
 
-    lein ring server
+    lein run
 
-or
-
-    lein run [port]
+Default: MongoDB without auth on localhost & default port. Jetty binds to localhost & port 8000
+Please edit "config/db.edn" & "config/jetty.edn" for your needs.
 
 
 ## License
