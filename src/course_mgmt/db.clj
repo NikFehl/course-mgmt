@@ -1,16 +1,31 @@
 (ns course-mgmt.db
+  (:refer-clojure :exclude [read-string])
   (:require [monger.core :as mg]
             [monger.collection :as mc]
             [monger.query :as mq]
             [monger.operators :refer :all]
             [monger.joda-time]
+            [monger.credentials :as mcr]
+            [clojure.edn :refer [read-string]]
             [clojure.tools.logging :as log])
   (:import  org.bson.types.ObjectId
             [com.mongodb MongoOptions]))
 
-;; localhost, default port, just connect
-(let [conn  (mg/connect)
-      db   (mg/get-db conn "mongo-test")]
+;; load config file
+(def dbconfig (read-string (slurp "config/db.edn")))
+
+(if (not (empty? (:dbpassword dbconfig)))
+  (def dbcred
+    (let [dbname (:dbname dbconfig)
+          dbuser (:dbuser dbconfig)
+          dbpw   (.toCharArray (:dbpassword dbconfig))]
+          (mcr/create dbuser dbname dbpw))))
+
+;; db-connection: without auth, when username empty
+(let [conn  (if (empty? (:dbusername dbconfig))
+                (mg/connect {:host (:dbhost dbconfig) :port (Integer/parseInt (:dbport dbconfig))})
+                (mg/connect-with-credentials (:dbhost dbconfig) (Integer/parseInt (:dbport dbconfig)) dbcred))
+      db   (mg/get-db conn (:dbname dbconfig))]
 
 
 (defn get-all [collection]

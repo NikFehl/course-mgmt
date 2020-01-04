@@ -1,0 +1,8 @@
+{
+  ;; MongoDB-settings
+  :dbhost "localhost"
+  :dbport "27017"
+  :dbname "mongo-test"
+  :dbuser ""
+  :dbpassword ""
+}
