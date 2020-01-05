@@ -97,7 +97,6 @@
 
 (defn get-course-by-name
   [name]
-  (log/info "einmal")
   (mc/find-one-as-map db "courses" { :name name }))
 
 (defn get-courses-filtered

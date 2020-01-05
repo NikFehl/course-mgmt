@@ -8,3 +8,6 @@
 - export attendees as csv
 - open registration only in a defined period.
 - audit logs
+- more conditions on course-registration (age on start-date of course for example)
+- address of attendees
+- split attendeelisting view in pages.
