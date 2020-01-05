@@ -1,6 +1,6 @@
 (ns course-mgmt.coursemgmt
-  (:require [ring.util.response]
-            [course-mgmt.db :as db]
+  (:refer-clojure :exclude [format])
+  (:require [course-mgmt.db :as db]
             [clojure.tools.logging :as log]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
   (:use
@@ -10,7 +10,7 @@
         [hiccup.util]
         [hiccup.element]
         [course-mgmt.pagedefaults]
-        [java-time :only [local-date-time as]]))
+        [java-time :only [local-date-time local-date format as]]))
 
 (defn courseedit
   "Depending on input, it will give you a form for editing
@@ -36,6 +36,8 @@
             [:tr
               [:td [:b "Name"]]
               [:td [:b "Anmeldung"]]
+              [:td [:b "Anmeldeschluss"]]
+              [:td [:b "Kursplätze"]]
               [:td [:b "Verantwortlicher"]]
               [:td ]
               [:td ]]]
@@ -46,6 +48,8 @@
               [:td (let [options ["aktiv" "deaktiviert"]
                     selected (:state course)]
                     (drop-down :state options selected))]
+              [:td [:input {:id "registrationclose" :name "registrationclose" :type "date" :value (:registrationclose course)}]]
+              [:td (text-field :seats (:seats course))]
               [:td (text-field :supervisor (:supervisor course))]
               [:td (hidden-field :id (:_id course)) [:button {:type "submit"} btntype] (anti-forgery-field)])
               del-form ]]]]]
@@ -69,15 +73,20 @@
                   [:td  (hidden-field :id "nil") [:button {:type "submit"} "Neuen Kurs anlegen"] (anti-forgery-field) ])
                 [:td [:b "Kursname"]]
                 [:td [:b "Anmeldung"]]
+                [:td [:b "Anmeldeschluss"]]
+                [:td [:b "Kursplätze"]]
                 [:td [:b "Verantwortlicher"]]
                 [:td [:b "Anzahl Teilnehmer"]]]]
             [:tbody
-              (for [{:keys [_id, name, state, supervisor]} courses]
+              (for [{:keys [_id, name, state, registrationclose, seats, supervisor]} courses]
               [:tr
                 (form-to [:post "./edit"]
                   [:td (hidden-field :id _id) [:button.button-outline {:type "submit"} "ändern"] (anti-forgery-field) ])
                 [:td (escape-html name)]
                 [:td (escape-html state)]
+                [:td (if (not (empty? registrationclose))
+                        (format "dd.MM.yyyy" (local-date registrationclose)))]
+                [:td seats ]
                 [:td (escape-html supervisor)]
                 [:td (db/count-courseattendees name)]]
                 [:div  #"\n" "<br>"])]]]]

@@ -46,9 +46,9 @@
   (GET "/attendees/list" [] (#'attendeelisting (db/list-attendees)))
   (POST "/attendees/list" [course sort-for] (attendeelisting (db/get-attendees {:course course :sort-for sort-for})))
   (GET "/courses/manage" [] #'courselist)
-  (POST "/courses/manage" [id name state supervisor]
+  (POST "/courses/manage" [id name state registrationclose seats supervisor]
         (do
-          (db/course-manage {:id id :name name :state state :supervisor supervisor})
+          (db/course-manage {:id id :name name :state state :registrationclose registrationclose :seats seats :supervisor supervisor})
           #'courselist))
   (DELETE "/courses/manage" [id]
         (do

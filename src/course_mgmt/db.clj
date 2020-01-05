@@ -31,7 +31,10 @@
 (defn get-all [collection]
     (mc/find-maps db collection))
 
+
+;; ------------------------------
 ;; for attendee-management:
+
 (defn insert-attendee [data]
   (merge
     (mc/insert-and-return db "attendees" data)
@@ -84,7 +87,10 @@
 (defn delete-attendee [id]
   (mc/remove-by-id db "attendees" (ObjectId. id)))
 
+
+;; --------------------------------
 ;; for course-management:
+
 (defn get-course [id]
   (mc/find-one-as-map db "courses" { :_id (ObjectId. id)}))
 
@@ -97,12 +103,12 @@
   "Depending on input, it will insert a new project or change an existing one."
   [input]
   (if (= (:id input) "nil")
-      (mc/insert db "courses" {:name (:name input) :state (:state input) :supervisor (:supervisor input)})
+      (mc/insert db "courses" {:name (:name input) :state (:state input) :registrationclose (:registrationclose input) :seats (:seats input) :supervisor (:supervisor input)})
       ((def comparison (get-course (:id input)))
         ;; compare if course-name changed & change it also for all attendees
         (if-not (= (:name input) (:name comparison))
           (mc/update db "attendees" {:course (:name comparison)} { $set {:course (:name input)} } {:multi true}))
-        (mc/update-by-id db "courses" (ObjectId. (:id input)) {:name (:name input) :state (:state input) :supervisor (:supervisor input)}))
+        (mc/update-by-id db "courses" (ObjectId. (:id input)) { $set {:name (:name input) :state (:state input) :registrationclose (:registrationclose input) :seats (:seats input) :supervisor (:supervisor input)}}))
       ))
 
 (defn delete-course [id]

@@ -18,7 +18,7 @@
         (link-to "/" "Welcome") " | "
         (link-to "/attendees/list" "AttendeeList") " | "
         (link-to "/attendees/register" "AttendeeRegistration") " | "
-        (link-to "/courses/manage" "CoursesList")
+        (link-to "/courses/manage" "CourseList")
         ]]
     [:div.row
       [:div.column [:p ]]]])
