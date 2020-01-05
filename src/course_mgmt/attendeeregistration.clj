@@ -46,7 +46,7 @@
           [:div.column.column-25 (escape-html (:lastname params))]]
         [:div.row
           [:div.column.column-20.column-offset-25 [:label "Geburtsdatum:"]]
-          [:div.column.column-25 (format "dd/MM/yyyy" (local-date (:birthdate params))) ]]
+          [:div.column.column-25 (format "dd.MM.yyyy" (local-date (:birthdate params))) ]]
         [:div.row
           [:div.column.column-20.column-offset-25 [:label "Ansprechperson:"]]
           [:div.column.column-25 (escape-html (:contact params))]]

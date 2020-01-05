@@ -59,12 +59,12 @@
             [:tr
               (form-to [:post "/attendees/manage"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "bearbeiten"] (anti-forgery-field) ])
               [:td [:small
-                     (format "dd/MM/yyyy HH:mm" (local-date-time timestamp))]]
+                     (format "dd.MM.yyyy HH:mm" (local-date-time timestamp))]]
               (if position
                 [:td {:style "text-align: center;"} position])
               [:td (escape-html firstname)]
               [:td (escape-html lastname)]
-              [:td {:title (format "dd/MM/yyyy" (local-date birthdate))}
+              [:td {:title (format "dd.MM.yyyy" (local-date birthdate))}
                     (.getYears (period (local-date birthdate) (local-date)))]
               [:td (escape-html contact)]
               [:td (mail-to (escape-html contactemail))]
