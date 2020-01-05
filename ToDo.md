@@ -7,5 +7,4 @@
 - unit tests
 - export attendees as csv
 - open registration only in a defined period.
-- define nr. of seats per course and move rest of attendees to a wait-list queue
 - audit logs
