@@ -17,6 +17,9 @@
 (defn attendeelisting
   "List all attendees, incl. age-calculation in years and contact details"
   [attendees]
+
+  (def courseseats (Integer/parseInt (:seats (db/get-course-by-name (:course (first attendees))))))
+
   (html5  {:lang "en"}
   htmlheader
   [:body
@@ -38,8 +41,6 @@
           [:td
             [:button {:type "submit"} "auswählen"] (anti-forgery-field) ]
           [:td ][:td ] [:td ])]]]
-  ;;  [:div.container
-    ;;  [:div.row
       [:table
         [:thead
           [:tr
@@ -56,12 +57,17 @@
             [:td [:b "Kommentar"]]]]
           [:tbody
           (for [{:keys [_id, timestamp, firstname, lastname, birthdate, contact, contactemail, contactphone, comment, position]} attendees]
-            [:tr
+            [:tr (if position
+                    (if (> position courseseats)
+                    {:style "text-align: center; background-color: #FFFCFD;"}))
               (form-to [:post "/attendees/manage"] [:td (hidden-field :id _id) [:button.button-clear {:type "submit"} "bearbeiten"] (anti-forgery-field) ])
               [:td [:small
                      (format "dd.MM.yyyy HH:mm" (local-date-time timestamp))]]
               (if position
-                [:td {:style "text-align: center;"} position])
+                [:td (if (<= position courseseats)
+                        {:style "text-align: center;"}
+                        {:style "text-align: center; color: firebrick;"})
+                      position])
               [:td (escape-html firstname)]
               [:td (escape-html lastname)]
               [:td {:title (format "dd.MM.yyyy" (local-date birthdate))}
@@ -71,5 +77,5 @@
               [:td (escape-html contactphone)]
               [:td (escape-html comment)]]
           [:div  #"\n" "<br>"])]]
-          ] ;;]]
+      ]
       htmlfooter))
