@@ -6,7 +6,7 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [course-mgmt.db :as db]
             [course-mgmt.attendeeregistration :refer [attendeeregistration check-registration]]
-            [course-mgmt.attendeelisting :refer [attendeelisting]]
+            [course-mgmt.attendeelisting :refer [attendeelisting exportattendees]]
             [course-mgmt.attendeeedit :refer [attendeeedit]]
             [course-mgmt.coursemgmt :refer :all]
             [ring.util.anti-forgery :refer [anti-forgery-field]])
@@ -45,6 +45,10 @@
           (ring/redirect "/attendees/list")))
   (GET "/attendees/list" [] (#'attendeelisting (db/list-attendees)))
   (POST "/attendees/list" [course sort-for] (attendeelisting (db/get-attendees {:course course :sort-for sort-for})))
+  (POST "/attendees/export" [course]
+        (do
+          (exportattendees course)
+          (ring/redirect "/attendees/list")))
   (GET "/courses/manage" [] #'courselist)
   (POST "/courses/manage" [id name state registrationclose seats supervisor]
         (do

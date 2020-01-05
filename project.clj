@@ -8,7 +8,8 @@
                  [ring/ring-defaults "0.3.2"]
                  [com.novemberain/monger "3.5.0"]
                  [clojure.java-time "0.3.2"]
-                 [org.clojure/tools.logging "0.5.0"]]
+                 [org.clojure/tools.logging "0.5.0"]
+                 [org.clojure/data.csv "0.1.4"]]
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler course-mgmt.handler/app}
   :main course-mgmt.core

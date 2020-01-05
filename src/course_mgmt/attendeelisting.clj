@@ -3,7 +3,9 @@
   (:require [ring.util.response]
             [clojure.tools.logging :as log]
             [course-mgmt.db :as db]
-            [ring.util.anti-forgery :refer [anti-forgery-field]])
+            [ring.util.anti-forgery :refer [anti-forgery-field]]
+            [clojure.data.csv :as csv]
+            [clojure.java.io :as io])
   (:use
         [hiccup.core]
         [hiccup.page]
@@ -13,12 +15,25 @@
         [course-mgmt.pagedefaults]
         [java-time :only [local-date-time local-date format period]]))
 
+(defn exportattendees
+  [course]
+  (log/info course)
+  (let [data (if (= course "Alle Kurse")
+                (db/list-attendees)
+                (db/get-attendee-position {:course course}))
+        exportfile (str "resources/public/exports/" (format "yyyyMMddHHmm"(local-date-time)) "-" course ".csv")]
+    (with-open [writer (io/writer exportfile)]
+      (csv/write-csv writer
+        (cons ["Anmeldedatum", "Position", "Vorname", "Nachname", "Geburtsdatum", "Ansprechperson", "Email", "Telefon", "Kommentar"]
+          (for [{:keys [timestamp, position, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} data]
+            [timestamp position firstname lastname birthdate contact contactemail contactphone comment]))))))
 
 (defn attendeelisting
   "List all attendees, incl. age-calculation in years and contact details"
   [attendees]
 
   (def courseseats (Integer/parseInt (:seats (db/get-course-by-name (:course (first attendees))))))
+  (def allcourses (for [{:keys [name]} (db/get-all "courses")] name))
 
   (html5  {:lang "en"}
   htmlheader
@@ -26,21 +41,37 @@
     navbar
     [:div.container
       [:div.row [:h4 "Übersicht Anmeldungen:" ]]
-      [:table
-        [:tr
-          (form-to [:post "/attendees/list"]
-          [:td ]
-          [:td
-            (let [options (conj (for [{:keys [name]} (db/get-all "courses")] name) "Alle Kurse")
-                  selected "Alle Kurse"]
-                (drop-down :course options selected))]
-          [:td
-            (let [options ["Nachname" "Vorname" "Anmeldedatum" "Alter" "ohne Sortierung"]
-                  selected "ohne Sortierung"]
+      [:details [:summary [:b "Filtern?"]]
+        [:table
+          [:tr
+            (form-to [:post "/attendees/list"]
+            [:td ]
+            [:td
+              (let [options (conj allcourses "Alle Kurse")
+                    selected "Alle Kurse"]
+                  (drop-down :course options selected))]
+            [:td ]
+            [:td
+              (let [options ["Nachname" "Vorname" "Anmeldedatum" "Alter" "ohne Sortierung"]
+                    selected "ohne Sortierung"]
                 (drop-down :sort-for options selected))]
-          [:td
-            [:button {:type "submit"} "auswählen"] (anti-forgery-field) ]
-          [:td ][:td ] [:td ])]]]
+            [:td ]
+            [:td
+              [:button {:type "submit"} "filtern"] (anti-forgery-field) ]
+            [:td ][:td ])]]]
+      [:details [:summary [:b "Exportieren?"]]
+        [:table
+          [:tr
+            (form-to [:post "/attendees/export"]
+            [:td ]
+            [:td
+              (let [options (conj allcourses "Alle Kurse")
+                    selected "Alle Kurse"]
+                  (drop-down :course options selected))]
+            [:td ]
+            [:td
+              [:button {:type "submit"} "exportieren"] (anti-forgery-field) ]
+            [:td ][:td ])]]]]
       [:table
         [:thead
           [:tr
