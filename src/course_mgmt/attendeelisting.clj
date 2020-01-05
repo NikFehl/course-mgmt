@@ -20,8 +20,8 @@
   (html5  {:lang "en"}
   htmlheader
   [:body
+    navbar
     [:div.container
-      navbar
       [:div.row [:h4 "Übersicht Anmeldungen:" ]]
       [:table
         [:tr

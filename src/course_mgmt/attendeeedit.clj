@@ -19,8 +19,8 @@
   (html5  {:lang "en"}
   htmlheader
   [:body
+    navbar
     [:div.container
-      navbar
       [:div.row
         [:div.column.column-offset-25.column-25 [:h4 "Anmeldung ändern:" ]]]
       (form-to [:post "/attendees/edit"] (hidden-field :id (:_id params))

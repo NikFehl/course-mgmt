@@ -38,7 +38,8 @@
 (defn insert-attendee [data]
   (merge
     (mc/insert-and-return db "attendees" data)
-    {:position (mc/count db "attendees" {:course (:course data)})}))
+    {:position (mc/count db "attendees" {:course (:course data)})}
+    {:courseseats (Integer/parseInt (:seats (mc/find-one-as-map db "courses" { :name (:course data) })))}))
 
 (defn list-attendees []
     (mc/find-maps db "attendees"))
@@ -93,6 +94,10 @@
 
 (defn get-course [id]
   (mc/find-one-as-map db "courses" { :_id (ObjectId. id)}))
+
+(defn get-course-by-name
+  [name]
+  (mc/find-one-as-map db "courses" { :name name }))
 
 (defn get-courses-filtered
   "Get courses filter (by status for example)"

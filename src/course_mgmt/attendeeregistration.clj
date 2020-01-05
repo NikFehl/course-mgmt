@@ -21,13 +21,19 @@
   (html5  {:lang "en"}
     htmlheader
     [:body
-      [:div.container
-        navbar
-        [:div.row
-          [:div.column.column-50.column-offset-25 {:style "text-align: center; data-offset-top: 150px;"} [:h4 "Glückwunsch!" ]]]
-        [:div.row
-          [:div.column.column-50.column-offset-25 {:style "text-align: center;"} "Du bist erfolgreich registiert und Nr. " [:b (:position params) ] " auf der Warteliste."]]
-        [:div.row [:p ]]]
+      navbar
+        (let [successmessage  (if (<= (:position params) (:courseseats params))
+                              [:h4 " Glückwunsch! " ]
+                              [:h4 " Registrierung erfolgreich! " ])
+              coursepos     (if (<= (:position params) (:courseseats params))
+                              [:p "Du bist erfolgreich registiert und Teilnehmer Nr. " [:b (:position params) ] " im Kurs."]
+                              [:p "Leider haben wir bereits viele Anmeldungen. Du bist Nr. " [:b (- (:position params)(:courseseats params)) ] " auf der Warteliste."])]
+          [:div.container
+            [:div.row
+              [:div.column.column-50.column-offset-25 {:style "text-align: center;"} successmessage (log/info successmessage) ]]
+            [:div.row
+              [:div.column.column-50.column-offset-25 {:style "text-align: center;"} coursepos ]]
+            [:div.row [:p ]]])
       [:div.container
         [:div.row
           [:div.column.column-20.column-offset-25 [:label "Kurs:"]]
@@ -65,8 +71,8 @@
     (html5  {:lang "en"}
       htmlheader
       [:body
+        navbar
         [:div.container
-          navbar
           [:div.row
             [:div.column.column-offset-25 [:h4 "Anmeldung" ]]]
           [:div.row

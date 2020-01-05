@@ -26,8 +26,8 @@
   (html5  {:lang "en"}
     htmlheader
     [:body
+      navbar
       [:div.container
-        navbar
         [:div.row
           [:div.column [:h4 "Kurs " btntype ]]]]
       [:div.container
@@ -62,8 +62,8 @@
     (html5  {:lang "en"}
       htmlheader
       [:body
+        navbar
         [:div.container
-          navbar
           [:div.row [:h4 "Kursübersicht:" ]]]
         [:div.container
           [:table
