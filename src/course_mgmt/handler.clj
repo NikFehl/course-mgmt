@@ -4,6 +4,7 @@
             [ring.util.response :as ring]
             [clojure.tools.logging :as log]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+            [ring.middleware.file :refer [file-request]]
             [course-mgmt.db :as db]
             [course-mgmt.attendeeregistration :refer [attendeeregistration check-registration]]
             [course-mgmt.attendeelisting :refer [attendeelisting exportattendees]]
@@ -31,9 +32,13 @@
 (defroutes app-routes
   "Default Routing for all incoming requests"
   (GET "/" [] #'welcome)
+
+  ;; Registration for Attendees
   (GET "/attendees/register" [] #'attendeeregistration)
   (POST "/attendees/register" [course firstname lastname birthdate contact contactemail contactphone comment]
           (check-registration {:course course :firstname firstname :lastname lastname :birthdate birthdate :contact contact :contactemail contactemail :contactphone contactphone :comment comment}))
+
+  ;; Attendee Management
   (POST "/attendees/manage" [id] (attendeeedit(db/get-attendee id)))
   (POST "/attendees/edit" [id course firstname lastname birthdate contact contactemail contactphone comment]
         (do
@@ -47,8 +52,10 @@
   (POST "/attendees/list" [course sort-for] (attendeelisting (db/get-attendees {:course course :sort-for sort-for})))
   (POST "/attendees/export" [course]
         (do
-          (exportattendees course)
-          (ring/redirect "/attendees/list")))
+          (def download (str "/exports/" (exportattendees course)))
+          (ring/redirect download)))
+
+  ;; Course Management
   (GET "/courses/manage" [] #'courselist)
   (POST "/courses/manage" [id name state registrationclose seats supervisor]
         (do
@@ -59,6 +66,8 @@
           (db/delete-course id)
           #'courselist))
   (POST "/courses/edit" [id] (courseedit id))
+
+  ;; Error Defaults
   (route/not-found "Not Found"))
 
 (def app

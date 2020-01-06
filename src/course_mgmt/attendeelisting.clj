@@ -15,18 +15,23 @@
         [course-mgmt.pagedefaults]
         [java-time :only [local-date-time local-date format period]]))
 
+
 (defn exportattendees
+  "Creates CSV file on selected course and results the path & filename"
   [course]
-  (log/info course)
   (let [data (if (= course "Alle Kurse")
                 (db/list-attendees)
                 (db/get-attendee-position {:course course}))
-        exportfile (str "resources/public/exports/" (format "yyyyMMddHHmm"(local-date-time)) "-" course ".csv")]
-    (with-open [writer (io/writer exportfile)]
+        datapath (str "resources/public/exports/")
+        exportfile (str (format "yyyyMMddHHmm"(local-date-time)) "-" course ".csv")]
+    (with-open [writer (io/writer (str datapath exportfile))]
       (csv/write-csv writer
         (cons ["Anmeldedatum", "Position", "Vorname", "Nachname", "Geburtsdatum", "Ansprechperson", "Email", "Telefon", "Kommentar"]
           (for [{:keys [timestamp, position, firstname, lastname, birthdate, contact, contactemail, contactphone, comment]} data]
-            [timestamp position firstname lastname birthdate contact contactemail contactphone comment]))))))
+            [timestamp position firstname lastname birthdate contact contactemail contactphone comment]))))
+    exportfile))
+
+
 
 (defn attendeelisting
   "List all attendees, incl. age-calculation in years and contact details"
