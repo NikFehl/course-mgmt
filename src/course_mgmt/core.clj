@@ -4,7 +4,8 @@
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [routes]]
             [course-mgmt.handler :as handler]
-            [clojure.edn :refer [read-string]]))
+            [clojure.edn :refer [read-string]]
+            [ring.logger :as logger]))
 
 ;; load config file
 (def jettyconfig (read-string (slurp "config/jetty.edn")))
@@ -15,7 +16,7 @@
   []
   (do
     (webserver/run-jetty
-      (wrap-reload #'handler/app)
+      (logger/wrap-with-logger (wrap-reload #'handler/app))
       {:host    (:hostname jettyconfig)
        :port    (Integer/parseInt (:port jettyconfig))
        :join? false})))
@@ -24,6 +25,7 @@
   "A very simple webserver using Ring & Jetty"
   []
   (do
-    (webserver/run-jetty handler/app
+    (webserver/run-jetty
+      (logger/wrap-with-logger handler/app)
       {:host    (:hostname jettyconfig)
        :port    (Integer/parseInt (:port jettyconfig))})))
